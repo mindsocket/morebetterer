@@ -1,8 +1,28 @@
 from django.db import models
 from django.contrib import admin
 from datetime import datetime
+from django.db.models.query import QuerySet
+from django.db.models import Avg
+
+class ItemQuerySet(QuerySet):
+    def underchallengeditems(self):
+        average = Item.objects.all().aggregate(Avg('challengecount'))['challengecount__avg']
+        return self.filter(challengecount__lte = average) 
+
+class ItemManager(models.Manager):
+    def get_query_set(self):
+        return ItemQuerySet(self.model)
+
+    def underchallengeditems(self):
+        return self.get_query_set().underchallengeditems()
+
+    def candidateitems(self):
+        item1 = Item.objects.underchallengeditems().order_by('?')[0]
+        item2 = Item.objects.exclude(id=item1.id).order_by('?')[0]
+        return (item1, item2)
 
 class Item(models.Model):
+    objects = ItemManager()
     itemname =  models.CharField(max_length=150)
     itemimg =  models.URLField()
     itemurl =  models.URLField()
@@ -30,6 +50,6 @@ class Challenge(models.Model):
         loseritem.save()
         super(Challenge, self).save(**kwargs)
 
-admin.site.register(Item)
-admin.site.register(Challenge)
+    def __unicode__(self):
+        return self.winner.itemname + ' beat ' + self.loser.itemname
 
