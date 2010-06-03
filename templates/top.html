@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load convert_tags %}
+
+{% block title %}Top Photos ... so far{% endblock %}
+
+{% block content %}
+<h1>Top photos ... so far</h1>
+
+{% for item in items %}
+    <p><a href="{{ item.itemurl }}">{{ item.itemname }}</a></p>
+    <p><a href="{{ item.itemurl }}">{% thumbnail item.itemimg "600gt" %}</a></p>
+{% endfor %}
+{% endblock %}

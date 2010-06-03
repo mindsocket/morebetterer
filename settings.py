@@ -2,6 +2,7 @@
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+CONVERT_DEBUG = DEBUG
 
 import os.path
 PROJECT_DIR = os.path.dirname(__file__)
@@ -44,7 +45,7 @@ MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://localhost:8000/media/'
+MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -55,6 +56,8 @@ ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'ba@+v!ny2fa%ou+$a!!)b%0dl8950&p)ibexnns-@_#xh8u4fh'
+
+INTERNAL_IPS = ('127.0.0.1',)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -73,9 +76,6 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'apps.urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     os.path.join(PROJECT_DIR, 'templates'),
 )
 
@@ -86,5 +86,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django_extensions',
+    'debug_toolbar',
+    'convert',
     'apps.morebetterer',
 )

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load convert_tags %}
+
+{% block title %}Photo of the Day Smackdown{% endblock %}
+
+{% block content %}
+<h1>Photo of the Day Smackdown</h1>
+<h2>Which image is more betterer?</h2>
+
+{% thumbnail item1.itemimg "600gt" %} vs {% thumbnail item2.itemimg "600gt" %} 
+
+{% endblock %}
