@@ -6,8 +6,24 @@
 {% block content %}
 <h1>Top photos ... so far</h1>
 
-{% for item in items %}
+{% for item in items.object_list %}
     <p><a href="{{ item.itemurl }}">{{ item.itemname }}</a></p>
     <p><a href="{{ item.itemurl }}">{% thumbnail item.itemimg "600gt" %}</a></p>
 {% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if items.has_previous %}
+            <a href="?page={{ items.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ items.number }} of {{ items.paginator.num_pages }}
+        </span>
+
+        {% if items.has_next %}
+            <a href="?page={{ items.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}
