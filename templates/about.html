@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load convert_tags %}
+
+{% block aboutcurrent %}current_{% endblock %}
+
+{% block title %}{% block metatitle %}About More Betterer{% endblock %}{% endblock %}
+
+{% block content %}
+<div id="about" class="content">
+<h2>About</h2>
+<p>Welcome to More Betterer.  This site lets you vote on images.  It is inspired by, and in the style of, 
+<a href="http://besthing.info/" target="_blank"><i>Best Thing</i></a>, <a href="http://thefairest.info/" target="_blank"><i>The Fairest</i></a> etc 
+by <a href="http://xkcd.com" target="_blank">XKCD</a>.  Images from my 
+<a href="http://roger.mindsocket.com.au/category/photography/potd-photography/" target="_blank">Photo of the Day</a> series are presented to visitors in 
+pairs, and a "winner" in each challenge is chosen each time.  Based on the collected results, a theoretical
+ ranking of the most popular photos can be obtained.  
+ It uses a <a href="http://bestthing.info/algorithms.html" target="_new">similar approach</a> to the above sites, but I am experimenting with alternative ranking systems.</p>   
+
+<p>Apart from satisfying my own curiosity as to which of my photos are popular, this project is my first 
+foray into using the django web framework.</p>
+
+<p>Feel free to send any comments by email to me (roger) at my domain (mindsocket.com.au).  If you like a particular
+photo, high quality prints are available in various forms (from affordable greeting cards through to 
+fancy framed versions) from <a href="http://www.redbubble.com/people/roger/art" target="_new">Red Bubble</a>.</p>
+
+<p>Enjoy!<br/>
+- Rog</p>
+</div>
+
+
+{% endblock %}

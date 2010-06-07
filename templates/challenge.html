@@ -1,12 +1,19 @@
 {% extends "base.html" %}
 {% load convert_tags %}
 
-{% block title %}Photo of the Day Smackdown{% endblock %}
+{% block challengecurrent %}current_{% endblock %}
+
+{% block title %}{% block metatitle %}Photo of the Day Smackdown{% endblock %}{% endblock %}
 
 {% block content %}
-<h1>Photo of the Day Smackdown</h1>
 <h2>Which image is more betterer?</h2>
-
-{% thumbnail item1.itemimg "600gt" %} vs {% thumbnail item2.itemimg "600gt" %} 
-
+<form action="" method="POST">
+<input type="hidden" name="left" value="{{ item1.id }}" />
+<input type="hidden" name="right" value="{{ item2.id }}" />
+<input type="hidden" name="token" value="{{ token }}" />
+{% thumbnail item1.itemimg "400x400gt" as img1 %}
+{% thumbnail item2.itemimg "400x400gt" as img2 %}
+<div id="challenge"><input type="image" name="choice" value="left" src="{{ img1.url }}" /> vs <input type="image" name="choice" value="left" src="{{ img2.url }}" /></div>
+{{ form.as_p }} 
+</form>
 {% endblock %}

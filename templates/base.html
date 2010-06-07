@@ -1,9 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html>
 <head>
-    <title>{% block title %}{% endblock %}</title>
+	<title>More Betterer - {% block title %}{% endblock %}</title>
+	<style type="text/css" media="screen">@import url( http://roger.mindsocket.com.au/wp-content/themes/inove/style.css );</style> 
+	<!-- for translations --> 
+		<!--[if IE]>
+		<link rel="stylesheet" href="http://roger.mindsocket.com.au/wp-content/themes/inove/ie.css" type="text/css" media="screen" />
+	<![endif]--> 
+	<!-- script START --> 
+	<script type="text/javascript" src="http://roger.mindsocket.com.au/wp-content/themes/inove/js/base.js"></script> 
+	<script type="text/javascript" src="http://roger.mindsocket.com.au/wp-content/themes/inove/js/menu.js"></script> 
+	<!-- script END --> 
+	<meta name="description" content= "Photos from Roger Barnes' Photo of the Day series do battle - {% block metatitle %}{% endblock %}"/> 
+	<meta name="keywords" content="Roger Barnes,photography,vote,challenge,landscape,tasmania,sydney,australia" />
+	<style>
+		#challenge { text-align: center; }
+		#challenge img { vertical-align: middle; }
+	</style> 
 </head>
 <body>
-    Heading
-    {% block content %}{% endblock %}
+<!-- wrap START --> 
+<div id="wrap"> 
+ 
+<!-- container START --> 
+<div id="container"  class="one-column" > 
+<div id="header"> 
+ 
+	<!-- banner START --> 
+			<div class="banner"> 
+			<img src="http://www.gravatar.com/avatar/dd6c985d22e3bf6ea849e8d2e6750d76.png?s=60" border="0" alt="logo">		</div> 
+		<!-- banner END --> 
+ 
+	<div id="caption"> 
+		<h1 id="title"><a href="http://roger.mindsocket.com.au/">Roger Barnes</a></h1> 
+		<div id="tagline">Various musings</div> 
+	</div> 
+ 
+	<div class="fixed"></div> 
+</div> 
+<!-- navigation START --> 
+<div id="navigation"> 
+	<!-- menus START --> 
+	<ul id="menus">
+		<li class="page_item"><a class="home" title="Home" href="http://roger.mindsocket.com.au/">Blog Home</a></li> 
+		<li class="{% block challengecurrent %}{% endblock %}page_item page-item-2"><a href="/morebetterer/" title="Voting">Voting</a></li> 
+		<li class="{% block topcurrent %}{% endblock %}page_item page-item-3"><a href="/morebetterer/top/" title="Top Images">Top Images</a></li> 
+		<li class="{% block aboutcurrent %}{% endblock %}page_item page-item-4"><a href="/morebetterer/about/" title="About">About</a></li> 
+		<li><a class="lastmenu" href="javascript:void(0);"></a></li> 
+	</ul> 
+	<!-- menus END --> 
+	<div class="fixed"></div> 
+</div> 
+<!-- navigation END --> 
+ 
+<!-- content START --> 
+<div id="content"> 
+ 
+	<!-- main START --> 
+	<div id="main" class="post"> 
+ 
+<h1>More Betterer</h1>
+{% block content %}{% endblock %}
+</div></div></div></div>
 </body>
 </html>

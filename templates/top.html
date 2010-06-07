@@ -1,14 +1,21 @@
 {% extends "base.html" %}
 {% load convert_tags %}
 
-{% block title %}Top Photos ... so far{% endblock %}
+{% block topcurrent %}current_{% endblock %}
+
+{% block title %}{% block metatitle %}Top Photos ... so far{% endblock %}{% endblock %}
 
 {% block content %}
-<h1>Top photos ... so far</h1>
+<div id="topphotos" class="content">
+<h2>Top photos ... so far</h2>
+
+<p>Only photos that have been in {{ threshold }} or more challenges are listed here...</p>
 
 {% for item in items.object_list %}
-    <p><a href="{{ item.itemurl }}">{{ item.itemname }}</a></p>
-    <p><a href="{{ item.itemurl }}">{% thumbnail item.itemimg "600gt" %}</a></p>
+    <p>
+    <a href="{{ item.itemurl }}" target="_new">{% thumbnail item.itemimg "400x400gt" %}</a><br/>
+    <a href="{{ item.itemurl }}" target="_new">#{{ items.start_index|add:forloop.counter0 }} ({{ item.wincount }}/{{ item.challengecount }}): {{ item.itemname }}</a>
+    </p>
 {% endfor %}
 
 <div class="pagination">
@@ -25,5 +32,6 @@
             <a href="?page={{ items.next_page_number }}">next</a>
         {% endif %}
     </span>
+</div>
 </div>
 {% endblock %}

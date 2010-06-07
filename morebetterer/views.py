@@ -1,9 +1,16 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404,render_to_response
 from morebetterer.models import Item, Challenge
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.core.cache import cache
+from base64 import urlsafe_b64encode, urlsafe_b64decode
+from django.http import Http404
+import hashlib
+import settings
 
 def top(request):
-    topitems = Item.objects.topitems()
+    threshold = 2
+    topitems = cache.get('topitems'+str(threshold),Item.objects.topitems(threshold))
+    cache.add('topitems'+str(threshold), topitems, 30 * 60)
     paginator = Paginator(topitems, 20)
     
     # Make sure page request is an int. If not, deliver first page.
@@ -18,9 +25,34 @@ def top(request):
     except (EmptyPage, InvalidPage):
         items = paginator.page(paginator.num_pages)
         
-    return render_to_response('top.html', {'items': items})
+    return render_to_response('top.html', {'items': items, 'threshold': threshold})
     
 def challenge(request):
-    item1, item2 = Item.objects.candidateitems()
-    return render_to_response('challenge.html', {'item1': item1, 'item2' : item2})
+    ipaddress = request.META['REMOTE_ADDR']  
     
+    if request.method == 'POST':
+        left = request.POST['left']
+        right = request.POST['right']
+        expectedtoken = sign(left + ":" + right + ":" + ipaddress, settings.SECRET_KEY)
+        if not request.POST['token'] == expectedtoken:
+            raise Http404 
+
+        choice = request.POST['choice']
+        winner = left if choice == 'left' else right  
+        loser = right if choice == 'left' else left
+        
+        challenge = Challenge(winner = get_object_or_404(Item, id=winner), loser = get_object_or_404(Item, id=loser), ipaddress = ipaddress)
+        challenge.save()
+        
+    item1, item2 = Item.objects.candidateitems()
+    token = sign(str(item1.id) + ":" + str(item2.id) + ":" + ipaddress, settings.SECRET_KEY)
+    return render_to_response('challenge.html', {'item1': item1, 'item2': item2, 'token': token})
+    
+def about(request):
+    return render_to_response('about.html')
+    
+def sign(s, key):
+    return uri_b64encode(hashlib.sha1(s + ':'  + key).digest())
+
+def uri_b64encode(s):
+     return urlsafe_b64encode(s).strip('=')

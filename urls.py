@@ -1,13 +1,16 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
+from django.views.decorators.cache import cache_page
+from morebetterer import views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^morebetterer/$', 'morebetterer.views.challenge'),
-    (r'^morebetterer/top/$', 'morebetterer.views.top'),
+    (r'^morebetterer/$', views.challenge),
+    (r'^morebetterer/top/$', views.top),
+    (r'^morebetterer/about/$', cache_page(views.about, 60 * 60)),
     (r'^admin/(.*)', admin.site.root),
 )
 

@@ -2,16 +2,19 @@ from __future__ import division
 from django.db import models
 from django.contrib import admin
 from datetime import datetime
+from django.core.cache import cache
 from django.db.models.query import QuerySet
 from django.db.models import Avg
 
 class ItemQuerySet(QuerySet):
     def underchallengeditems(self):
-        average = Item.objects.all().aggregate(Avg('challengecount'))['challengecount__avg']
+        average = cache.get('average',Item.objects.all().aggregate(Avg('challengecount'))['challengecount__avg'])
+        cache.add('average', average, 30 * 60)
+
         return self.filter(challengecount__lte = average)
     
-    def topitems(self):
-        return self.filter(challengecount__gte=5).order_by('-score') 
+    def topitems(self,threshold):
+        return self.filter(challengecount__gte=threshold).order_by('-score') 
 
 class ItemManager(models.Manager):
     def get_query_set(self):
@@ -20,8 +23,8 @@ class ItemManager(models.Manager):
     def underchallengeditems(self):
         return self.get_query_set().underchallengeditems()
 
-    def topitems(self):
-        return self.get_query_set().topitems()
+    def topitems(self,threshold=5):
+        return self.get_query_set().topitems(threshold)
 
     def candidateitems(self):
         item1 = Item.objects.underchallengeditems().order_by('?')[0]
