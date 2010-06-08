@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404,render_to_response
-from morebetterer.models import Item, Challenge
+from models import Item, Challenge
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.cache import cache
 from base64 import urlsafe_b64encode, urlsafe_b64decode
