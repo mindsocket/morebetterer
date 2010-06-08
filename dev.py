@@ -1,8 +1,8 @@
-# Production Django settings for apps project.
+# Development Django settings for apps project.
 
-#DEBUG = True
-#TEMPLATE_DEBUG = DEBUG
-#CONVERT_DEBUG = DEBUG
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+CONVERT_DEBUG = DEBUG
 
 import os.path
 PROJECT_DIR = os.path.dirname(__file__)
@@ -12,8 +12,6 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
-GOOGLE_ANALYTICS_KEY = 'UA-91802-9'
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = 'django.db'             # Or path to database file if using sqlite3.
@@ -72,7 +70,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-#    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'apps.urls'
@@ -88,7 +86,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django_extensions',
-#    'debug_toolbar',
+    'debug_toolbar',
     'convert',
     'apps.morebetterer',
 )

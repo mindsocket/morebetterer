@@ -42,7 +42,7 @@
 <div id="navigation"> 
 	<!-- menus START --> 
 	<ul id="menus">
-		<li class="page_item"><a class="home" title="Home" href="http://roger.mindsocket.com.au/">Blog Home</a></li> 
+		<li class="page_item"><a class="home" title="Home" href="/">Home</a></li> 
 		<li class="{% block challengecurrent %}{% endblock %}page_item page-item-2"><a href="/morebetterer/" title="Voting">Voting</a></li> 
 		<li class="{% block topcurrent %}{% endblock %}page_item page-item-3"><a href="/morebetterer/top/" title="Top Images">Top Images</a></li> 
 		<li class="{% block aboutcurrent %}{% endblock %}page_item page-item-4"><a href="/morebetterer/about/" title="About">About</a></li> 
@@ -62,5 +62,16 @@
 <h1>More Betterer</h1>
 {% block content %}{% endblock %}
 </div></div></div></div>
+{% if settings.GOOGLE_ANALYTICS_KEY %}
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("{{settings.GOOGLE_ANALYTICS_KEY}}");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+{% endif %}
 </body>
 </html>
