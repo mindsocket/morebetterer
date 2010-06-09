@@ -14,7 +14,7 @@ class ItemQuerySet(QuerySet):
         return self.filter(challengecount__lte = average)
     
     def topitems(self,threshold):
-        return self.filter(challengecount__gte=threshold).order_by('-score') 
+        return self.filter(challengecount__gte=threshold).extra(select={'score': 'cast(wincount as real) / challengecount'}).extra(order_by= ['-score','-challengecount']) 
 
 class ItemManager(models.Manager):
     def get_query_set(self):
@@ -38,7 +38,6 @@ class Item(models.Model):
     itemurl =  models.URLField()
     challengecount = models.IntegerField(default=0)
     wincount = models.IntegerField(default=0)
-    score = models.IntegerField(default=0)
     
     def __unicode__(self):
         return self.itemname
@@ -50,14 +49,12 @@ class Challenge(models.Model):
     ipaddress = models.IPAddressField()
 
     def save(self, **kwargs):
-        winneritem = Item.objects.filter(id=self.winner.id)[0]
+        winneritem = Item.objects.get(id=self.winner.id)
         winneritem.wincount += 1
         winneritem.challengecount += 1
-        winneritem.score = winneritem.wincount / winneritem.challengecount 
         winneritem.save()
-        loseritem = Item.objects.filter(id=self.loser.id)[0]
+        loseritem = Item.objects.get(id=self.loser.id)
         loseritem.challengecount += 1
-        loseritem.score = loseritem.wincount / loseritem.challengecount 
         loseritem.save()
         super(Challenge, self).save(**kwargs)
 

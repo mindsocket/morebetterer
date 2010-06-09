@@ -7,13 +7,13 @@
 
 {% block content %}
 <h2>Which image is more betterer?</h2>
-<form action="" method="POST">
+<form action="" method="POST" style="margin-top:10px">
 <input type="hidden" name="left" value="{{ item1.id }}" />
 <input type="hidden" name="right" value="{{ item2.id }}" />
 <input type="hidden" name="token" value="{{ token }}" />
 {% thumbnail item1.itemimg "400x400gt" as img1 %}
 {% thumbnail item2.itemimg "400x400gt" as img2 %}
-<div id="challenge"><input type="image" name="choice" value="left" src="{{ img1.url }}" /> vs <input type="image" name="choice" value="left" src="{{ img2.url }}" /></div>
+<div id="challenge"><input type="image" name="choice" value="left" src="{{ img1.url }}" /> vs <input type="image" name="choice" value="right" src="{{ img2.url }}" /></div>
 {{ form.as_p }} 
 </form>
 {% endblock %}

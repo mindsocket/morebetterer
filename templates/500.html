@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load convert_tags %}
+
+{% block title %}{% block metatitle %}Server Error{% endblock %}{% endblock %}
+
+{% block content %}
+<div id="500" class="content">
+<h2>Uh oh, something broke :(</h2>
+
+The page you requested just messed itself.  If you believe this happened in error (which is most likely the case), please
+send an email to me (roger) at my domain (mindsocket.com.au).</div>
+
+
+{% endblock %}

@@ -9,11 +9,11 @@
 <div id="topphotos" class="content">
 <h2>Top photos ... so far</h2>
 
-<p>Only photos that have been in {{ threshold }} or more challenges are listed here...</p>
+<p>Only photos that have been in {{ threshold }} or more challenges are listed here, and the results are recalculated every {{ cachemins }} minutes...</p>
 
 {% for item in items.object_list %}
     <p>
-    <a href="{{ item.itemurl }}" target="_new">{% thumbnail item.itemimg "400x400gt" %}</a><br/>
+    <a href="{{ item.itemurl }}" target="_new">{% thumbnail item.itemimg "400x400gt" as img %}<img src="{{ img.url}}" alt="{{ item.itemname }}" border="0" width="{{img.width}}" height="{{img.height}}"></a><br/>
     <a href="{{ item.itemurl }}" target="_new">#{{ items.start_index|add:forloop.counter0 }} ({{ item.wincount }}/{{ item.challengecount }}): {{ item.itemname }}</a>
     </p>
 {% endfor %}

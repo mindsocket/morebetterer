@@ -1,16 +1,18 @@
 from django.shortcuts import get_object_or_404,render_to_response
+from django.template import RequestContext
 from models import Item, Challenge
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.cache import cache
 from base64 import urlsafe_b64encode, urlsafe_b64decode
 from django.http import Http404
 import hashlib
-import settings
+from django.conf import settings
 
 def top(request):
-    threshold = 2
+    threshold = 1
+    cachemins = 10
     topitems = cache.get('topitems'+str(threshold),Item.objects.topitems(threshold))
-    cache.add('topitems'+str(threshold), topitems, 30 * 60)
+    cache.add('topitems'+str(threshold), topitems, cachemins * 60)
     paginator = Paginator(topitems, 20)
     
     # Make sure page request is an int. If not, deliver first page.
@@ -25,7 +27,7 @@ def top(request):
     except (EmptyPage, InvalidPage):
         items = paginator.page(paginator.num_pages)
         
-    return render_to_response('top.html', {'items': items, 'threshold': threshold})
+    return render_to_response('top.html', {'items': items, 'threshold': threshold, 'cachemins': cachemins},context_instance=RequestContext(request))
     
 def challenge(request):
     ipaddress = request.META['REMOTE_ADDR']  
@@ -46,10 +48,10 @@ def challenge(request):
         
     item1, item2 = Item.objects.candidateitems()
     token = sign(str(item1.id) + ":" + str(item2.id) + ":" + ipaddress, settings.SECRET_KEY)
-    return render_to_response('challenge.html', {'item1': item1, 'item2': item2, 'token': token})
+    return render_to_response('challenge.html', {'item1': item1, 'item2': item2, 'token': token},context_instance=RequestContext(request))
     
 def about(request):
-    return render_to_response('about.html')
+    return render_to_response('about.html',context_instance=RequestContext(request))
     
 def sign(s, key):
     return uri_b64encode(hashlib.sha1(s + ':'  + key).digest())

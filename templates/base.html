@@ -15,7 +15,7 @@
 	<meta name="keywords" content="Roger Barnes,photography,vote,challenge,landscape,tasmania,sydney,australia" />
 	<style>
 		#challenge { text-align: center; }
-		#challenge img { vertical-align: middle; }
+		#challenge img,input { vertical-align: middle; }
 	</style> 
 </head>
 <body>
@@ -33,7 +33,6 @@
  
 	<div id="caption"> 
 		<h1 id="title"><a href="http://roger.mindsocket.com.au/">Roger Barnes</a></h1> 
-		<div id="tagline">Various musings</div> 
 	</div> 
  
 	<div class="fixed"></div> 
@@ -59,17 +58,17 @@
 	<!-- main START --> 
 	<div id="main" class="post"> 
  
-<h1>More Betterer</h1>
+<h1>More Betterer <sup>beta</sup></h1>
 {% block content %}{% endblock %}
 </div></div></div></div>
-{% if settings.GOOGLE_ANALYTICS_KEY %}
+{% if not debug %}
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script type="text/javascript">
 try {
-var pageTracker = _gat._getTracker("{{settings.GOOGLE_ANALYTICS_KEY}}");
+var pageTracker = _gat._getTracker("UA-91802-9");
 pageTracker._trackPageview();
 } catch(err) {}</script>
 {% endif %}

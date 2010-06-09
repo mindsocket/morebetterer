@@ -11,12 +11,12 @@ ADMINS = (
     ('Roger Barnes', 'roger@mindsocket.com.au'),
 )
 
+CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+
 MANAGERS = ADMINS
 
-GOOGLE_ANALYTICS_KEY = 'UA-91802-9'
-
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'django.db'             # Or path to database file if using sqlite3.
+DATABASE_NAME = os.path.join(PROJECT_DIR,'django.db')             # Or path to database file if using sqlite3.
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
@@ -54,7 +54,7 @@ LOGIN_REDIRECT_URL = '/'
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/admin/'
+ADMIN_MEDIA_PREFIX = '/adminmedia/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'ba@+v!ny2fa%ou+$a!!)b%0dl8950&p)ibexnns-@_#xh8u4fh'
@@ -90,5 +90,6 @@ INSTALLED_APPS = (
     'django_extensions',
 #    'debug_toolbar',
     'convert',
+    'memcache_status',
     'apps.morebetterer',
 )
