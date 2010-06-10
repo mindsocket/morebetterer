@@ -5,6 +5,7 @@ from datetime import datetime
 from django.core.cache import cache
 from django.db.models.query import QuerySet
 from django.db.models import Avg
+import rpvote
 
 class ItemQuerySet(QuerySet):
     def underchallengeditems(self):
@@ -14,7 +15,32 @@ class ItemQuerySet(QuerySet):
         return self.filter(challengecount__lte = average)
     
     def topitems(self,threshold):
-        return self.filter(challengecount__gte=threshold).extra(select={'score': 'cast(wincount as real) / challengecount'}).extra(order_by= ['-score','-challengecount']) 
+        #return self.filter(challengecount__gte=threshold).extra(select={'score': 'cast(wincount as real) / challengecount'}).extra(order_by= ['-score','-challengecount']) 
+        items = Item.objects.values_list('id', flat=True)
+        contest = rpvote.Contest([str(item) for item in items])
+        challenges = Challenge.objects.values_list('winner','loser')
+        for i in challenges:
+            contest.addballot([[str(i[0])],[str(i[1])]])
+
+        contest.computemargins()
+        outcome = contest.compute()
+        outcome.printresult()
+
+        res = outcome.result()
+
+        ls = list(outcome.entries)
+
+        def func(key1, key2):
+            # Sorting function
+            (w1,l1,t1) = res[key1]
+            (w2,l2,t2) = res[key2]
+            val = cmp((w2,t2), (w1,t1))
+            return val
+
+        ls.sort(func)
+
+        return sorted(self.filter(challengecount__gte=threshold),key=lambda item : ls.index(str(item.id)))
+
 
 class ItemManager(models.Manager):
     def get_query_set(self):

@@ -9,7 +9,7 @@ import hashlib
 from django.conf import settings
 
 def top(request):
-    threshold = 1
+    threshold = 3
     cachemins = 10
     topitems = cache.get('topitems'+str(threshold),Item.objects.topitems(threshold))
     cache.add('topitems'+str(threshold), topitems, cachemins * 60)
@@ -39,12 +39,14 @@ def challenge(request):
         if not request.POST['token'] == expectedtoken:
             raise Http404 
 
-        choice = request.POST['choice']
-        winner = left if choice == 'left' else right  
-        loser = right if choice == 'left' else left
+        if not cache.get(expectedtoken):
+            cache.set(expectedtoken,"x")
+            choice = request.POST['choice']
+            winner = left if choice == 'left' else right  
+            loser = right if choice == 'left' else left
         
-        challenge = Challenge(winner = get_object_or_404(Item, id=winner), loser = get_object_or_404(Item, id=loser), ipaddress = ipaddress)
-        challenge.save()
+            challenge = Challenge(winner = get_object_or_404(Item, id=winner), loser = get_object_or_404(Item, id=loser), ipaddress = ipaddress)
+            challenge.save()
         
     item1, item2 = Item.objects.candidateitems()
     token = sign(str(item1.id) + ":" + str(item2.id) + ":" + ipaddress, settings.SECRET_KEY)

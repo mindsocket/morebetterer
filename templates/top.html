@@ -20,6 +20,7 @@
 
 <div class="pagination">
     <span class="step-links">
+        <a href="?page=1">first</a>
         {% if items.has_previous %}
             <a href="?page={{ items.previous_page_number }}">previous</a>
         {% endif %}
@@ -31,6 +32,7 @@
         {% if items.has_next %}
             <a href="?page={{ items.next_page_number }}">next</a>
         {% endif %}
+        <a href="?page={{ items.paginator.num_pages }}">last</a>
     </span>
 </div>
 </div>
