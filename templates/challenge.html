@@ -7,7 +7,7 @@
 
 {% block content %}
 <h2>Which image is more betterer?</h2>
-<form action="" method="POST" style="margin-top:10px">
+<form action="" method="POST" style="margin-top:10px; margin-bottom:10px;">
 <input type="hidden" name="left" value="{{ item1.id }}" />
 <input type="hidden" name="right" value="{{ item2.id }}" />
 <input type="hidden" name="token" value="{{ token }}" />
@@ -16,4 +16,6 @@
 <div id="challenge"><input type="image" name="choice" value="left" src="{{ img1.url }}" /> vs <input type="image" name="choice" value="right" src="{{ img2.url }}" /></div>
 {{ form.as_p }} 
 </form>
+
+<div id="dunno"><a href="/morebetterer/" title="Voting">I can't decide, show me another pair!</a></div>
 {% endblock %}

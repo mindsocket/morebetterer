@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load convert_tags %}
+
+{% block title %}{% block metatitle %}Page Not Found{% endblock %}{% endblock %}
+
+{% block content %}
+<div id="toofast" class="content">
+<h2>Rate Limit Exceeded</h2>
+
+<p>To limit the impact of potential ballot-stuffing, a rate limit has been imposed.  It should be lenient enough that a human would never see this if they've taken a moment to consider each pair of images.  If you believe this happened in error, please send an email to me (roger) at my domain (mindsocket.com.au).</p>
+
+<p>The rate limit will rest in a few minutes, feel free to try again then.</p></div>
+{% endblock %}

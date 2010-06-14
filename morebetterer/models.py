@@ -9,13 +9,19 @@ import rpvote
 
 class ItemQuerySet(QuerySet):
     def underchallengeditems(self):
-        average = cache.get('average',Item.objects.all().aggregate(Avg('challengecount'))['challengecount__avg'])
-        cache.add('average', average, 30 * 60)
+        average = cache.get('average')
+        if not average:
+            import logging
+            logging.info('Recalculating average')
+            average = Item.objects.all().aggregate(Avg('challengecount'))['challengecount__avg']
+            cache.add('average', average, 30 * 60)
 
         return self.filter(challengecount__lte = average)
     
     def topitems(self,threshold):
         #return self.filter(challengecount__gte=threshold).extra(select={'score': 'cast(wincount as real) / challengecount'}).extra(order_by= ['-score','-challengecount']) 
+        import logging
+        logging.info('Recalculating top items')
         items = Item.objects.values_list('id', flat=True)
         contest = rpvote.Contest([str(item) for item in items])
         challenges = Challenge.objects.values_list('winner','loser')
@@ -86,3 +92,8 @@ class Challenge(models.Model):
 
     def __unicode__(self):
         return '"' + self.winner.itemname + '" beat "' + self.loser.itemname + '"'
+
+class ChallengeCount(models.Model):
+    ipaddress = models.IPAddressField(primary_key=True, editable=False)
+    count = models.IntegerField(editable=False)
+

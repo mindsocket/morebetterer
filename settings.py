@@ -93,3 +93,13 @@ INSTALLED_APPS = (
     'memcache_status',
     'apps.morebetterer',
 )
+
+import logging
+logging.basicConfig(
+    level = logging.INFO,
+    format = '%(asctime)s %(levelname)s %(message)s',
+    filename = os.path.join(PROJECT_DIR, 'morebetterer.log'),
+)
+#emailhandler = logging.handlers.SMTPHandler('localhost','roger@mindsocket.com.au',['roger@mindsocket.com.au'],'More Betterer log')
+#emailhandler.setLevel(logging.WARN)
+#logging.getLogger('').addHandler(emailhandler)
