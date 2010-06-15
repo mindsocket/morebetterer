@@ -6,6 +6,17 @@ from django.core.cache import cache
 from django.db.models.query import QuerySet
 from django.db.models import Avg
 import rpvote
+import random
+
+def runballot():
+    items = Item.objects.values_list('id', flat=True)
+    contest = rpvote.Contest([str(item) for item in items])
+    challenges = Challenge.objects.values_list('winner','loser')
+    for i in challenges:
+        contest.addballot([[str(i[0])],[str(i[1])]])
+
+    contest.computemargins()
+    return contest.compute()
 
 class ItemQuerySet(QuerySet):
     def underchallengeditems(self):
@@ -22,15 +33,8 @@ class ItemQuerySet(QuerySet):
         #return self.filter(challengecount__gte=threshold).extra(select={'score': 'cast(wincount as real) / challengecount'}).extra(order_by= ['-score','-challengecount']) 
         import logging
         logging.info('Recalculating top items')
-        items = Item.objects.values_list('id', flat=True)
-        contest = rpvote.Contest([str(item) for item in items])
-        challenges = Challenge.objects.values_list('winner','loser')
-        for i in challenges:
-            contest.addballot([[str(i[0])],[str(i[1])]])
-
-        contest.computemargins()
-        outcome = contest.compute()
-        outcome.printresult()
+        outcome = runballot()
+        #outcome.printresult()
 
         res = outcome.result()
 
@@ -59,8 +63,31 @@ class ItemManager(models.Manager):
         return self.get_query_set().topitems(threshold)
 
     def candidateitems(self):
-        item1 = Item.objects.underchallengeditems().order_by('?')[0]
+        #outcome.printresult()
+
+        ls = cache.get('candidateslist')
+        if not ls or len(ls) == 0:
+            import logging
+            logging.info('Recalculating candidateslist')
+            outcome = runballot()
+            res = outcome.result()
+    
+            ls = list(outcome.entries)
+    
+            def func(key1, key2):
+                # Sorting function
+                (w1,l1,t1) = res[key1]
+                (w2,l2,t2) = res[key2]
+                val = cmp((t2,w2), (t1,w1))
+                return val
+    
+            ls.sort(func)
+            ls = ls[:int(len(ls)/10)]
+
+        #item1 = Item.objects.underchallengeditems().order_by('?')[0]
+        item1 = Item.objects.get(id=int(ls.pop(0)))
         item2 = Item.objects.exclude(id=item1.id).order_by('?')[0]
+        cache.set('candidateslist', ls)
         return (item1, item2)
     
 class Item(models.Model):
