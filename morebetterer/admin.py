@@ -4,15 +4,18 @@ from django.contrib import admin
 class ChallengeWinnerInline(admin.TabularInline):
     model = Challenge
     fk_name = 'winner'
+    extra = 0
 
 class ChallengeLoserInline(admin.TabularInline):
     model = Challenge
     fk_name = 'loser'
+    extra = 0
 
 class ChallengeAdmin(admin.ModelAdmin):
     date_hierarchy = 'timestamp'
     list_display = ('__unicode__', 'ipaddress', 'timestamp')
     search_fields = ['ipaddress']
+    list_filter = ('timestamp',)
 
 class ChallengeCountAdmin(admin.ModelAdmin):
     list_display = ('ipaddress', 'count')
