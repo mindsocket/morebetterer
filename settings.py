@@ -3,10 +3,13 @@
 #DEBUG = True
 #TEMPLATE_DEBUG = DEBUG
 #CONVERT_DEBUG = DEBUG
+EMAIL_HOST = 'mindsocket.com.au'
+EMAIL_USE_TLS = True
+#SERVER_EMAIL = 'roger@mindsocket.com.au'
 
 import os.path
 PROJECT_DIR = os.path.dirname(__file__)
-
+SESSION_COOKIE_DOMAIN = 'roger.mindsocket.com.au'
 ADMINS = (
     ('Roger Barnes', 'roger@mindsocket.com.au'),
 )
@@ -100,6 +103,3 @@ logging.basicConfig(
     format = '%(asctime)s %(levelname)s %(message)s',
     filename = os.path.join(PROJECT_DIR, 'morebetterer.log'),
 )
-#emailhandler = logging.handlers.SMTPHandler('localhost','roger@mindsocket.com.au',['roger@mindsocket.com.au'],'More Betterer log')
-#emailhandler.setLevel(logging.WARN)
-#logging.getLogger('').addHandler(emailhandler)

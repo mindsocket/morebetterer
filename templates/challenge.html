@@ -7,15 +7,20 @@
 
 {% block content %}
 <h2>Which image is more betterer?</h2>
-<form action="" method="POST" style="margin-top:10px; margin-bottom:10px;">
+
+<form name="challengeform" action="" method="POST" style="margin-top:10px; margin-bottom:10px;">
 <input type="hidden" name="left" value="{{ item1.id }}" />
 <input type="hidden" name="right" value="{{ item2.id }}" />
 <input type="hidden" name="token" value="{{ token }}" />
-{% thumbnail item1.itemimg "400x400gt" as img1 %}
-{% thumbnail item2.itemimg "400x400gt" as img2 %}
-<div id="challenge"><input type="image" name="choice" value="left" src="{{ img1.url }}" /> vs <input type="image" name="choice" value="right" src="{{ img2.url }}" /></div>
+<input type="hidden" name="choice" />
+{% thumbnail item1.itemimg "430x460gt" as img1 %}
+{% thumbnail item2.itemimg "430x460gt" as img2 %}
+<div id="challenge"><input type="image" name="choiceleft" value="left" src="{{ img1.url }}" onclick="document.challengeform.choice.value='left'; return true;" />
+ 
+<input type="image" name="choiceright" value="right" src="{{ img2.url }}" onclick="document.challengeform.choice.value='right'; return true;"/></div>
 {{ form.as_p }} 
 </form>
-
+{% if user.is_authenticated %}<a href="{{ item1.itemurl }}" target="_new">rb</a> ({{ item1.wincount }}/{{ item1.challengecount }}) <a href="/admin/morebetterer/item/{{ item1.id }}/delete/" target="_blank">delete</a> <a href="/admin/morebetterer/item/{{ item1.id }}/" target="_blank">edit</a>
+<span style="align:right"><a href="{{ item2.itemurl }}" target="_new">rb</a> ({{ item2.wincount }}/{{ item2.challengecount }}) <a href="/admin/morebetterer/item/{{ item2.id }}/delete/" target="_blank">delete</a> <a href="/admin/morebetterer/item/{{ item2.id }}/" target="_blank">edit</a></span>{% endif %}
 <div id="dunno"><a href="/morebetterer/" title="Voting">I can't decide, show me another pair!</a></div>
 {% endblock %}

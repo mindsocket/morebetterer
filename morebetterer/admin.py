@@ -1,5 +1,7 @@
 from morebetterer.models import Item, Challenge, ChallengeCount
 from django.contrib import admin
+from convert.base import MediaFile
+from convert.conf import settings
 
 class ChallengeWinnerInline(admin.TabularInline):
     model = Challenge
@@ -21,9 +23,14 @@ class ChallengeCountAdmin(admin.ModelAdmin):
     list_display = ('ipaddress', 'count')
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('itemname', 'wincount', 'challengecount')
+    list_display = ('itemname', 'itemimgimg', 'wincount', 'challengecount')
     search_fields = ['itemname']
     inlines = [ ChallengeWinnerInline, ChallengeLoserInline, ]
+    def itemimgimg(self,item):
+      img=MediaFile(item.itemimg)
+      thumb=img.thumbnail("64x64gt")
+      return thumb.tag
+    itemimgimg.allow_tags = True
 
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Challenge, ChallengeAdmin)
