@@ -1,0 +1,5 @@
+*.pyc
+*.swp
+django.db
+morebetterer.log
+media/
