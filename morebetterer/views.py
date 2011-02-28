@@ -23,7 +23,7 @@ class ratelimit_post_morebetterer(ratelimit_post):
 
 def top(request):
     """View for top items (paginated) above a threshold of challenges"""
-    threshold = 10
+    threshold = 5 
     cachemins = 10
     topitems = cache.get('rpitems'+str(threshold), cache.get('topitems'+str(threshold)))
     if not topitems:

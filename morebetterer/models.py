@@ -40,10 +40,10 @@ class ItemQuerySet(QuerySet):
             average = Item.objects.all().aggregate(Avg('challengecount'))['challengecount__avg']
             cache.add('average', average, 30 * 60)
 
-        #min = Item.objects.all().aggregate(Min('challengecount'))['challengecount__min']
+        min = Item.objects.all().aggregate(Min('challengecount'))['challengecount__min']
 
-        #return self.filter(challengecount = min)
-        return self.filter(challengecount__lte = average)
+        return self.filter(challengecount = min)
+        #return self.filter(challengecount__lte = average)
 
 
     def weightedchoice(self):
@@ -84,6 +84,7 @@ class ItemManager(models.Manager):
 
     def recalculateTotals(self):
         for item in self.all():
+            """exclude(ipaddress__in=["66.180.172.117", "110.174.49.200", "192.31.37.169"]).count()"""
             item.wincount=item.winner.count()
             item.challengecount=item.winner.count() + item.loser.count()
             item.save()

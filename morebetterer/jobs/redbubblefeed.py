@@ -12,7 +12,7 @@ class Job(HourlyJob):
     feed = 'http://assets.redbubble.com/people/' + user + '/art.atom'
     d = feedparser.parse(feed)
     for e in d.entries:
-      itemimg = e.enclosures[0].href.replace('300x300,075,t','550x550,075,f')
+      itemimg = e.enclosures[0].href.replace('300x300,075','550x550,075')
       itemurl = e.link.replace("?utm_campaign=feed&utm_medium=feed&utm_source=RB","")
       itemname = e.title
       if not Item.objects.filter(itemurl=itemurl).count():
